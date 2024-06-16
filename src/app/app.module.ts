@@ -12,6 +12,7 @@ import { ErrorConnectionComponent } from './connection/error-connection/error-co
 import { Error404Component } from './error404/error404.component';
 import { ProtectedPathComponent } from './protected-path/protected-path.component';
 import { TryRegisterComponent } from './connection/try-register/try-register.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TryRegisterComponent } from './connection/try-register/try-register.com
     ErrorConnectionComponent,
     Error404Component,
     ProtectedPathComponent,
-    TryRegisterComponent
+    TryRegisterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
