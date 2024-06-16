@@ -1,0 +1,9 @@
+<h1>Connection</h1>
+<h2>Se connecter</h2>
+<form (ngSubmit)="connect()">
+    <label for="email">E-mail</label>
+    <input name="email" id="email" [(ngModel)]="email">
+    <label for="password">Mot de passe</label>
+    <input name="password" id="password" [(ngModel)]="password">
+    <button type="submit">Envoyer</button>
+</form>
