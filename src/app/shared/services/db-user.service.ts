@@ -3,6 +3,7 @@ import { Observable, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user.class';
 import { LocalStorageService } from './local-storage.service';
+import { UserDTO } from '../../game/models/user-dto.type';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +15,9 @@ export class DbUserService {
   private http = inject(HttpClient);
   private lsService = inject(LocalStorageService);
 
-  getOneUser(email: string): Observable<User> {
+  getOneUser(email: string): Observable<UserDTO> {
     const headers = this.getHeaders();
-    console.log("c'est appelé", headers)
-    //const user$ = this.http.get<any>(`${this._BASE_URL}/email/${email}`, { headers });
     const user$ = this.http.get<any>(`${this._BASE_URL}/email/${email}`);
-
-    user$.subscribe(qqch => console.log(qqch));
-
-    user$.pipe(
-      tap(user => console.log(user, "from get one user"))
-    )
     return user$;
   }
 
@@ -34,7 +27,6 @@ export class DbUserService {
 
   getHeaders(): HttpHeaders {
     const token = this.lsService.getToken();
-    console.log(token);
 
     return new HttpHeaders({
       "Authorization": `Bearer ${token}`

@@ -8,6 +8,7 @@ import { authGuard } from './shared/core/auth.guard';
 import { userResolver } from './shared/core/user.resolver';
 import { TryRegisterComponent } from './connection/try-register/try-register.component';
 import { HomeComponent } from './home/home.component';
+import { StartingComponent } from './game/starting/starting.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: "login", component: TryAuthComponent },
   { path: "register", component: TryRegisterComponent },
   { path: "error-connection", component: ErrorConnectionComponent },
+  { path: "start", component: StartingComponent, canActivate: [authGuard] },
   { path: "**", component: Error404Component }
 ];
 

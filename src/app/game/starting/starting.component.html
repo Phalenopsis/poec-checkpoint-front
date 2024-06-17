@@ -1,0 +1,22 @@
+<h1>Nouvelle partie</h1>
+<div *ngIf="user$ | async as user">{{user.name}}</div>
+<h2>Choisir votre difficulté</h2>
+<ul>
+    <li><button type="button" (click)="chooseDifficulty('easy')">Facile</button></li>
+    <li><button type="button" (click)="chooseDifficulty('medium')">Moyen</button></li>
+    <li><button type="button" (click)="chooseDifficulty('difficult')">Dur</button></li>
+</ul>
+
+
+<div *ngIf="game$ | async as game">
+
+    
+
+    <table *ngIf="grid$ | async as grid">
+        <tr *ngFor="let line of grid; let nbLine = index">
+            <td *ngFor="let column of line; let nbColumn = index" (click)="play(nbColumn)"></td>
+        </tr>
+    </table>
+</div>
+
+

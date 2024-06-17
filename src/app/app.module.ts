@@ -13,6 +13,7 @@ import { Error404Component } from './error404/error404.component';
 import { ProtectedPathComponent } from './protected-path/protected-path.component';
 import { TryRegisterComponent } from './connection/try-register/try-register.component';
 import { HomeComponent } from './home/home.component';
+import { StartingComponent } from './game/starting/starting.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HomeComponent } from './home/home.component';
     Error404Component,
     ProtectedPathComponent,
     TryRegisterComponent,
-    HomeComponent
+    HomeComponent,
+    StartingComponent
   ],
   imports: [
     BrowserModule,

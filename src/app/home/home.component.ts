@@ -20,15 +20,8 @@ export class HomeComponent {
 
   ngOnInit() {
     const token = this.tokenService.getTokenFromLocalStorageAndDecode();
-    console.log(token)
     if (token) {
-      console.log(token, "from home")
-      console.log(token.sub, "from home, email")
-
       this.user$ = this.userService.getOneUser(token.sub);
-      this.user$.pipe(
-        tap(user => console.log(user, "from inside pipe into ngOnIntit in home component"))
-      )
     }
   }
 }

@@ -10,9 +10,6 @@ export const userResolver: ResolveFn<boolean> = (route, state) => {
   const userService = inject(DbUserService);
   const token = tokenService.getTokenFromLocalStorageAndDecode();
   if (token) {
-    userService.getOneUser(token.sub).pipe(
-      tap(qqch => console.log(qqch))
-    )
   }
 
   return true;
