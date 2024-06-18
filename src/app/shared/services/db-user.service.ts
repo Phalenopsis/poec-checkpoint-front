@@ -18,6 +18,7 @@ export class DbUserService {
   getOneUser(email: string): Observable<UserDTO> {
     const headers = this.getHeaders();
     const user$ = this.http.get<any>(`${this._BASE_URL}/email/${email}`);
+    //user$.subscribe(user => console.log(user, "FROM DB-USER SERVICE"))
     return user$;
   }
 

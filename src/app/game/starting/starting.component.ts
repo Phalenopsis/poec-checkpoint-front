@@ -3,7 +3,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 import { TokenService } from '../../shared/services/token.service';
 import { DbUserService } from '../../shared/services/db-user.service';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject, take, tap } from 'rxjs';
 import { User } from '../../shared/models/user.class';
 import { GameService } from '../../shared/services/game.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -32,20 +32,21 @@ export class StartingComponent {
   user!: PlayerDTO;
   grid$: BehaviorSubject<any> = new BehaviorSubject([[]]);
   game$!: Observable<GameLaunched>;
-  grid!: string[][];
+  grid!: any;
 
   ngOnInit() {
     const token = this.tokenService.getTokenFromLocalStorageAndDecode();
 
     if (token) {
-      this.user$ = this.userService.getOneUser(token.sub);
-      this.user$.pipe(
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe((user) => {
-        if (user) {
-          this.user = this.transformService.transformUserIntoPlayerDTO(user, 1);
-        }
-      })
+      this.user$ = this.userService.getOneUser(token.sub).pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(user => this.user = this.transformService.transformUserIntoPlayerDTO(user, 1))
+      )
+      // .subscribe((user) => {
+      //   if (user) {
+      //     this.user = this.transformService.transformUserIntoPlayerDTO(user, 1);
+      //   }
+      // })
     }
 
   }
@@ -56,7 +57,8 @@ export class StartingComponent {
   }
 
   listenGame() {
-    this.game$.pipe(
+    this.game$ = this.game$.pipe(
+      take(1),
       takeUntilDestroyed(this.destroyRef),
       map((game: GameLaunched) => {
         if (game) {
@@ -67,17 +69,26 @@ export class StartingComponent {
               grid[line][column] = game.grid[line * WIDTH + column]
             }
           }
-          return grid;
+          console.log(grid);
+          console.log("WINNNNER ", game.isFinished)
+
+          //return grid;
+          game.constructGrid = grid;
         }
         else {
-          return [[]];
+          //return [[]];
+          ;
         }
+        return game;
       }),
-      tap(grid => this.grid$.next(grid)),
-    ).subscribe()
+      //tap(grid => this.grid$.next(grid)),
+    )
+    //.subscribe(grid => this.grid = grid)
   }
 
-  play(nbColumn: number) {
+  play(gameId: number, nbColumn: number) {
     console.log(nbColumn);
+    this.game$ = this.gameService.postMove(gameId, nbColumn);
+    this.listenGame();
   }
 }

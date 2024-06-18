@@ -9,14 +9,24 @@
 
 
 <div *ngIf="game$ | async as game">
-
-    
-
-    <table *ngIf="grid$ | async as grid">
-        <tr *ngFor="let line of grid; let nbLine = index">
-            <td *ngFor="let column of line; let nbColumn = index" (click)="play(nbColumn)"></td>
+    <div *ngIf="game.isFinished != 0; else playingTable">
+        <h1>{{game.isFinished == 1 ? "YOU" : "IA"}} WIN !</h1>
+    </div>
+    <ng-template #playingTable>
+    <table *ngIf="game.constructGrid">
+        
+        
+        <tr *ngFor="let line of game.constructGrid; let nbLine = index">
+            <td *ngFor="let column of line; let nbColumn = index" (click)="play(game.id, nbColumn)">
+            <!-- <td *ngFor="let column of line; let nbColumn = index" > -->
+                <span [ngClass]="{'red':game.constructGrid[nbLine][nbColumn] === '1', 'yellow':game.constructGrid[nbLine][nbColumn] === '2'}">
+                    <span>{{nbLine}} : {{nbColumn}}</span>
+                </span>
+                
+            </td>
         </tr>
     </table>
+</ng-template>
 </div>
 
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { User } from '../models/user.class';
 import { UserDTO } from '../../game/models/user-dto.type';
 import { PlayerDTO } from '../../game/models/player-dto.type';
@@ -18,6 +18,7 @@ export class GameService {
   private lsService = inject(LocalStorageService);
 
   postNewGame(difficultyChoosen: string, playerDTO: PlayerDTO): Observable<GameLaunched> {
+    console.log("postnewgame")
     const game$ = this.http.post<any>(
       `${this._BASE_URL}/new`,
       {
@@ -29,7 +30,7 @@ export class GameService {
   }
 
   postMove(tablePlayed: number, columnMove: number): Observable<any> {
-    return this.http.post<any>(
+    return this.http.patch<any>(
       `${this._BASE_URL}/play`,
       {
         tableId: tablePlayed,

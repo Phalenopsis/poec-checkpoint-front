@@ -3,5 +3,7 @@ export type GameLaunched = {
     playerId: number,
     difficulty: string,
     grid: string,
-    humanPlayerColor: number
+    humanPlayerColor: number,
+    constructGrid?: string[][],
+    isFinished: number
 }
