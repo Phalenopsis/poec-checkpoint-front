@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (
   const router: Router = inject(Router);
 
   const token = tokenService.getTokenFromLocalStorageAndDecode();
-  if (token && token.role && token.role == "ROLE_ADMIN" && token.role == "ROLE_USER") {
+  if (token && token.role && (token.role == "ROLE_ADMIN" || token.role == "ROLE_USER")) {
     return true;
   } else {
     router.navigateByUrl('');

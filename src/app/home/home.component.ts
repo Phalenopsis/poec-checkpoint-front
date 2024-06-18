@@ -1,21 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { LocalStorageService } from '../shared/services/local-storage.service';
-import { TokenService } from '../shared/services/token.service';
 import { DbUserService } from '../shared/services/db-user.service';
-import { User } from '../shared/models/user.class';
+import { AuthService } from '../shared/services/auth.service';
+import { TokenService } from '../shared/services/token.service';
 import { Observable, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { User } from '../shared/models/user.class';
 
 @Component({
-  selector: 'app-protected-path',
-  templateUrl: './protected-path.component.html',
-  styleUrl: './protected-path.component.css'
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
-export class ProtectedPathComponent {
+export class HomeComponent {
   lsService = inject(LocalStorageService);
   tokenService = inject(TokenService);
   userService = inject(DbUserService);
-  router = inject(Router);
 
   user$!: Observable<User>;
 

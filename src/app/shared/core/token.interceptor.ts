@@ -5,21 +5,17 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
-export function tokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+export function tokenInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const lsService = inject(LocalStorageService);
   const token = lsService.getToken()
 
   if (!token) {
-    return next(req);
+    return next(request);
   }
 
-  const headers = new HttpHeaders({
-    Authorization: token
+  const cloned = request.clone({
+    headers: request.headers.set('Authorization', 'Bearer ' + token),
   });
 
-  const clonedRequest = req.clone({
-    headers
-  });
-
-  return next(clonedRequest);
+  return next(cloned);
 }

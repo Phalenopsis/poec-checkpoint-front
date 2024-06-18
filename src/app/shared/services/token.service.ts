@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenResponse } from '../models/token.class';
 import { LocalStorageService } from './local-storage.service';
+import { ValidToken } from '../models/valid-token.type';
 
 
 @Injectable({
@@ -28,7 +29,7 @@ export class TokenService {
     this._setTokenDetailsSubject$(decodedToken);
   }
 
-  getTokenFromLocalStorageAndDecode(): any {
+  getTokenFromLocalStorageAndDecode(): ValidToken | null {
     // On récupère le token stocké en localStorage
     const tokenId = this.lsService.getToken();
     // S'il y en a un

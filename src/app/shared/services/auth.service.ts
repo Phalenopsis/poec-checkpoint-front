@@ -1,10 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { UserRegister } from '../models/user-register.class';
 import { UserAuth } from '../models/user-auth.class';
 import { TokenResponse } from '../models/token.class';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,25 +19,30 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ) { }
 
   // Je m'inscris : j'envoie mon objet UserRegister et je m'abonne à la réponse de mon serveur
-  signUp(userRegister: UserRegister): void {
-    this.http.post<any>(`${this._BASE_URL}/register`, userRegister)
-      .pipe(tap(res => console.log(res)))
-      .subscribe()
+  signUp(userRegister: UserRegister): Observable<TokenResponse> {
+    this.tokenService.resetToken();
+    return this.http.post<any>(`${this._BASE_URL}/register`, userRegister).pipe(
+      map((tokenFromDB: TokenResponse) => {
+        //this.tokenService.updateToken(tokenFromDB);
+        return tokenFromDB;
+      })
+    );
   }
 
   // Je me connecte : j'envoie mon objet UserAuth et je m'abonne à la réponse de mon serveur. Lorsque je la reçois, je reçois le token que je stock en localStorage.
-  signIn(userAuth: UserAuth): void {
+  signIn(userAuth: UserAuth): Observable<TokenResponse> {
     this.tokenService.resetToken();
-    this.http.post<any>(`${this._BASE_URL}/authenticate`, userAuth)
-      .subscribe((tokenFromDB: TokenResponse) => {
-        console.log("FROM SIGN_IN ", tokenFromDB);
+    return this.http.post<any>(`${this._BASE_URL}/authenticate`, userAuth).pipe(
+      map((tokenFromDB: TokenResponse) => {
         this.tokenService.updateToken(tokenFromDB);
-        console.log("token in ls : ", this.tokenService.getTokenFromLocalStorageAndDecode());
+        return tokenFromDB;
       })
+    );
   }
 
   getHttpErrorSubject$(): Observable<HttpErrorResponse> {
@@ -58,5 +64,4 @@ export class AuthService {
     // On ajoute l'erreur au SuccessSubject
     this._httpSuccessSubject$.next(success);
   }
-
 }

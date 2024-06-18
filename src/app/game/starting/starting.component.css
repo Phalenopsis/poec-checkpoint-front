@@ -1,0 +1,17 @@
+td {
+    width: 100px;
+    height: 100px;
+    background-color: aqua;
+}
+span {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+
+    &.red {
+        background-color: red;
+    }
+    &.yellow {
+        background-color: yellow;
+    }
+}
