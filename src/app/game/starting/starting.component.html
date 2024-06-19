@@ -8,25 +8,23 @@
 </ul>
 
 
-<div *ngIf="game$ | async as game">
-    <div *ngIf="game.isFinished != 0; else playingTable">
-        <h1>{{game.isFinished == 1 ? "YOU" : "IA"}} WIN !</h1>
+<div class="playground" *ngIf="game$ | async as game">
+    <div class="result" *ngIf="game.isFinished != 0">
+        <div class="winner">{{game.isFinished == 1 ? "YOU" : game.isFinished == 2 ? "IA" : "NOBODY "}} WIN !</div>
     </div>
-    <ng-template #playingTable>
-    <table *ngIf="game.constructGrid">
-        
-        
+    
+    <table *ngIf="game.constructGrid">  
         <tr *ngFor="let line of game.constructGrid; let nbLine = index">
             <td *ngFor="let column of line; let nbColumn = index" (click)="play(game.id, nbColumn)">
             <!-- <td *ngFor="let column of line; let nbColumn = index" > -->
                 <span [ngClass]="{'red':game.constructGrid[nbLine][nbColumn] === '1', 'yellow':game.constructGrid[nbLine][nbColumn] === '2'}">
-                    <span>{{nbLine}} : {{nbColumn}}</span>
+                    <!-- <span>{{nbLine}} : {{nbColumn}}</span> -->
                 </span>
                 
             </td>
         </tr>
     </table>
-</ng-template>
+
 </div>
 
 
